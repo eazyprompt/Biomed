@@ -33,6 +33,24 @@
             --graph-bg: #f8fafc;
         }
 
+/* ค้นหา #view-derma #derma-msg หรือเพิ่มใหม่ท้ายสุดของ <style> */
+
+#view-derma #derma-msg {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 20;
+    
+    /* คำนวณจาก: Top กล้อง (80px) + สูงกล้อง (240px) + ช่องว่าง (10px) = 330px */
+    top: -20px; 
+    
+    /* ปรับแต่งตัวอักษรให้เด่นขึ้น */
+    font-size: 1rem !important;
+    font-weight: 600;
+    color: var(--text-sub);
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
@@ -146,13 +164,28 @@
         .glass-card.neuro-active .neuro-crosshair { opacity: 1; }
 
         /* DERMA */
+     /* 1. ซ่อนหัวข้อและตัวเลขใหญ่ในหน้า Derma */
+        #view-derma #derma-main-lbl,
+        #view-derma #derma-val {
+            display: none !important;
+        }
+
+        /* 2. จัดระยะของข้อความสถานะ (derma-msg) ให้ชิดบน */
+        #view-derma .display-section {
+            margin-top: 5px;
+            margin-bottom: 10px; /* ลดพื้นที่ว่างด้านล่าง */
+            min-height: 20px;
+        }
+
+        /* 3. ขยับกล้องขึ้นไปด้านบน (แทนที่ตัวเลขที่หายไป) */
         .glass-card.derma-active .cam-frame {
-            position: absolute; 
-            top: 190px; /* ขยับขึ้นนิดหน่อยเพื่อหนีปุ่มล่าง */
-            left: 50%; transform: translateX(-50%);
-            width: 220px; 
-            height: 220px; 
-            border-radius: 50%; 
+            position: absolute;
+            top: 80px; /* << แก้ตรงนี้: เดิม 190px ขยับขึ้นมาเป็น 80px */
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 240px; /* เพิ่มขนาดวงกลมให้ใหญ่ขึ้นนิดหน่อยก็ได้ (เดิม 220px) */
+            height: 240px; 
+            border-radius: 50%;
             border: 4px solid var(--teal);
             box-shadow: 0 0 40px rgba(20, 184, 166, 0.3);
             z-index: 10;
