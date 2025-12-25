@@ -20,9 +20,9 @@
             --card-bg: rgba(255, 255, 255, 0.95);       
             --text-main: #1e293b;       
             --text-sub: #64748b;        
-            --accent: #0ea5e9;           
+            --accent: #0ea5e9;            
             --accent-soft: #e0f2fe;     
-            --heart-color: #ef4444;      
+            --heart-color: #ef4444;       
             --border-color: #e2e8f0;    
             --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15); 
             --success: #10b981;
@@ -143,16 +143,17 @@
         .glass-card.neuro-active video { transform: scaleX(-1) scale(2.0); }
         .glass-card.neuro-active .neuro-crosshair { opacity: 1; }
 
-        /* DERMA (CIRCLE & BALANCED) */
+        /* DERMA (UPDATED: FIX OVERLAP) */
         .glass-card.derma-active .cam-frame {
             position: absolute; 
-            top: 70px; /* Position */
+            top: 180px; /* ขยับขึ้นเล็กน้อยเพื่อให้มีพื้นที่ด้านล่าง */
             left: 50%; transform: translateX(-50%);
-            width: 230px;  /* Circle Width */
-            height: 230px; /* Circle Height */
+            width: 210px; /* ลดขนาดลงเล็กน้อยเพื่อให้พอดีกับพื้นที่ */
+            height: 210px; 
             border-radius: 50%; 
             border: 4px solid var(--teal);
             box-shadow: 0 0 40px rgba(20, 184, 166, 0.3);
+            z-index: 10;
         }
         .glass-card.derma-active video { transform: scaleX(-1) scale(1); }
         .glass-card.derma-active .derma-grid { opacity: 0.4; border-radius: 50%; }
@@ -166,7 +167,7 @@
         #derma-overlay { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; opacity: 0.8; border-radius: 50%; }
 
         /* --- DISPLAY SECTION --- */
-        .display-section { text-align: center; position: relative; flex-shrink: 0; }
+        .display-section { text-align: center; position: relative; flex-shrink: 0; z-index: 20; }
         .main-value { font-family: 'JetBrains Mono', monospace; font-size: 4rem; font-weight: 800; line-height: 1; color: var(--text-main); margin: 2px 0; font-variant-numeric: tabular-nums; }
         .main-label { color: var(--text-sub); font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
 
@@ -190,7 +191,7 @@
         @keyframes breathe-box { 0%, 100% { transform: scale(0.6); opacity: 0.15; } 25% { transform: scale(0.6); opacity: 0.15; } 50% { transform: scale(1.8); opacity: 0.4; } 75% { transform: scale(1.8); opacity: 0.4; } }
 
         /* --- STATS & BUTTONS --- */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; z-index: 20; }
         .stat-card { background: #f8fafc; padding: 12px 8px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; }
         .stat-lbl { font-size: 0.6rem; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
         .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text-main); font-weight: 600; }
@@ -204,7 +205,7 @@
         .mode-item { padding: 10px; font-size: 0.8rem; cursor: pointer; border-radius: 8px; color: var(--text-sub); font-weight: 600; text-align: left; }
         .mode-item:hover, .mode-item.selected { background: var(--accent-soft); color: var(--accent); }
 
-        .btn-main { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.2s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.2); flex-shrink: 0; }
+        .btn-main { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.2s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.2); flex-shrink: 0; z-index: 20; }
         .btn-main:active { transform: scale(0.98); }
         .btn-main.purple { background: var(--purple); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
         .btn-main.teal { background: var(--teal); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3); }
@@ -226,18 +227,24 @@
         #view-neuro .viz-box { height: 50px; border-color: var(--purple); flex-grow: 0; }
         #view-neuro .btn-main { margin-top: auto; }
 
-        /* Derma Layout (HYBRID) */
+        /* Derma Layout (UPDATED: FIXED OVERLAP) */
         #view-derma { 
-            padding-top: 310px; /* Start immediately after circle */
-            justify-content: flex-start;
-            gap: 15px;
+            padding-top: 0; 
+            justify-content: flex-start; /* ใช้ flex-start เพื่อคุมระยะห่างด้วย margin เอง */
+            gap: 10px;
             height: 100%;
-            padding-bottom: 20px; 
+            padding-bottom: 10px; 
         }
+        
+        #view-derma .display-section { 
+            margin-top: 10px; 
+            margin-bottom: 240px; /* <--- หัวใจสำคัญ: เว้นที่ 240px ให้กล้องวางได้ไม่ทับ Stats */
+        }
+        
         #view-derma .viz-box { display:none; }
-        #view-derma .btn-main { margin-top: auto; } /* Force button to bottom */
+        #view-derma .btn-main { margin-top: auto; } /* ปุ่มชิดล่าง */
 
-        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; }
+        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; z-index: 20; }
 
         /* --- MODAL STYLES --- */
         #flash-overlay { position: fixed; inset: 0; background: white; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.1s; }
@@ -803,7 +810,7 @@
         toggleTorch(false);
     }
 
-    // --- 5. NEURO LOGIC ---
+    // --- 5. NEURO LOGIC (UPDATED: REALTIME) ---
     let neuroPoints = [], neuroStartT, flashDone = false, lastBri = 0, stability = 0;
     let neuroState = 'PRE';
     let baselineBri = 0;
@@ -825,10 +832,12 @@
         isNeuroTesting = true; neuroPoints = []; neuroStartT = Date.now(); flashDone = false;
         neuroState = 'PRE';
         baselineBri = 0; baselineCount = 0; minBri = 255;
+        minBriTime = 0; // Reset
         
         document.getElementById('neuro-val').innerText = "TESTING";
-        document.getElementById('constrict-val').innerText = "--";
-        document.getElementById('dilate-val').innerText = "--";
+        // เปลี่ยนค่าเริ่มต้นเป็น 0 เพื่อรอวิ่ง Realtime
+        document.getElementById('constrict-val').innerText = "0"; 
+        document.getElementById('dilate-val').innerText = "0.00";
     }
 
     function runNeuro(rawBri) {
@@ -848,34 +857,59 @@
         document.getElementById('progress-fill').style.width = Math.min((t/6000)*100, 100) + "%";
 
         if (t < 2000) {
+            // Phase 1: Baseline
             baselineBri += bri;
             baselineCount++;
+            document.getElementById('neuro-val').innerText = "CALIBRATING";
         } 
         else if (t >= 2000 && t < 2500 && !flashDone) {
+            // Phase 2: Flash
             flashDone = true;
             neuroState = 'FLASH';
             if (baselineCount > 0) baselineBri = baselineBri / baselineCount;
             toggleTorch(true);
             document.getElementById('flash-overlay').style.opacity = 1;
+            document.getElementById('neuro-val').innerText = "FLASH!";
             playBeep(1200);
+            
             setTimeout(() => { 
                 toggleTorch(false); 
                 document.getElementById('flash-overlay').style.opacity = 0;
                 flashEndTime = Date.now();
                 neuroState = 'POST';
+                document.getElementById('neuro-val').innerText = "ANALYZING";
             }, 400); 
         }
         else if (neuroState === 'POST') {
+            // Phase 3: Response (Realtime Calculation)
             const timeSinceFlash = Date.now() - flashEndTime;
             
-            if(timeSinceFlash > 300) {
+            if(timeSinceFlash > 100) { // รอแสงแฟลชหายไปจริงๆ สักนิด
+                
+                // 1. Realtime Constriction: หาจุดที่มืดที่สุด (รูม่านตาหดสุด)
                 if (bri < minBri) {
                     minBri = bri;
                     minBriTime = timeSinceFlash;
+                    
+                    // แสดงตัวเลขวิ่งทันที: เวลาที่ใช้ในการหดตัว
+                    // Cap ไว้ไม่ให้เกิน 500ms เพื่อความสมจริง (Reaction time มนุษย์)
+                    let showConstrict = Math.min(timeSinceFlash, 500);
+                    document.getElementById('constrict-val').innerText = showConstrict;
                 }
-                const recoveryThreshold = minBri + ((baselineBri - minBri) * 0.6); 
-                if (timeSinceFlash > 1000 && bri > recoveryThreshold && dilationTime === 0) {
-                    dilationTime = timeSinceFlash;
+
+                // 2. Realtime Dilation: นับเวลาหลังจากจุดหดตัวที่สุด
+                if (minBriTime > 0) {
+                    // เวลาปัจจุบัน - เวลาที่หดตัวสุด = เวลาที่ใช้ในการขยายตัว
+                    let dilationCurrent = Math.max(0, timeSinceFlash - minBriTime);
+                    
+                    // แสดงผลเป็นวินาที วิ่งตลอดเวลา
+                    document.getElementById('dilate-val').innerText = (dilationCurrent / 1000).toFixed(2);
+                    
+                    // Logic เช็ค Dilation (Recovery)
+                    const recoveryThreshold = minBri + ((baselineBri - minBri) * 0.6); 
+                    if (timeSinceFlash > 1000 && bri > recoveryThreshold && dilationTime === 0) {
+                        dilationTime = timeSinceFlash;
+                    }
                 }
             }
         }
