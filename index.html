@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BioMed Pro</title>
+    <title>BioMed Pro: Authentic Restore</title>
 <link rel="icon" href="./icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.321.0/dist/umd/lucide.min.js"></script>
@@ -107,7 +107,7 @@
         
         .cam-placeholder { position: absolute; color: #334155; pointer-events: none; }
 
-        /* --- FINGERPRINT WATERMARK --- */
+        /* --- FINGERPRINT WATERMARK (CARDIO) --- */
         .fingerprint-guide {
             position: absolute;
             inset: 0;
@@ -120,15 +120,36 @@
             opacity: 1;
             transition: opacity 0.3s;
         }
-        .fingerprint-guide svg {
-            animation: pulse-red 2s infinite ease-in-out;
-        }
+        .fingerprint-guide svg { animation: pulse-red 2s infinite ease-in-out; }
         @keyframes pulse-red {
             0% { opacity: 0.4; transform: scale(0.95); }
             50% { opacity: 0.8; transform: scale(1.05); }
             100% { opacity: 0.4; transform: scale(0.95); }
         }
+        
+        /* --- CROSSHAIR (NEURO) --- */
+        .neuro-crosshair {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0; 
+            transition: opacity 0.3s;
+            z-index: 65;
+        }
+        .neuro-crosshair::before, .neuro-crosshair::after {
+            content: '';
+            position: absolute;
+            background: rgba(139, 92, 246, 0.6); 
+            border-radius: 1px;
+        }
+        .neuro-crosshair::before { width: 30px; height: 2px; } 
+        .neuro-crosshair::after { width: 2px; height: 30px; }
+
         .glass-card.neuro-active .fingerprint-guide { opacity: 0; }
+        .glass-card.neuro-active .neuro-crosshair { opacity: 1; }
 
         /* --- NEURO MODE CAMERA --- */
         .glass-card.neuro-active .cam-frame {
@@ -155,7 +176,6 @@
         #heart-wrapper { display: flex; justify-content: center; align-items: center; height: 35px; }
         
         /* --- HEART ANIMATION --- */
-        /* 1. Ambient Pulse */
         @keyframes heart-ambient {
             0% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 4px var(--heart-color)); }
@@ -163,7 +183,6 @@
         }
         #heart-wrapper svg { animation: heart-ambient 1.8s infinite ease-in-out; }
         
-        /* 2. Sharp Pop (Overrides Ambient) */
         @keyframes pop-beat { 
             0% { transform: scale(1); filter: drop-shadow(0 0 0 var(--heart-color)); } 
             15% { transform: scale(1.35); filter: drop-shadow(0 0 10px var(--heart-color)); } 
@@ -195,7 +214,7 @@
         .stat-sub { font-size: 0.6rem; color: var(--text-sub); margin-top: 2px;}
 
         /* --- BUTTONS --- */
-        .util-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; flex-shrink: 0; }
+        .util-row { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; flex-shrink: 0; }
         .btn-util { padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: #fff; color: var(--text-sub); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
         .btn-util.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
         
@@ -266,7 +285,11 @@
             </div>
             
             <div style="display:flex; gap:10px; align-items:center;">
-                <button onclick="toggleTorchManual()" id="torch-btn" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:5px; display:none;"><i data-lucide="flashlight"></i></button>
+                <button onclick="clearCacheApp()" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:5px; margin-right:5px;">
+                    <i data-lucide="rotate-ccw" width="20"></i>
+                </button>
+
+                <button onclick="toggleTorchManual()" id="torch-btn" style="display:none;"><i data-lucide="flashlight"></i></button>
                 
                 <div class="cam-frame" id="camFrame">
                     <div class="cam-placeholder"><i data-lucide="camera-off" width="24"></i></div>
@@ -274,6 +297,8 @@
                     
                     <div class="fingerprint-guide"><i data-lucide="fingerprint" width="32" height="32"></i></div>
                     
+                    <div class="neuro-crosshair"></div>
+
                     <div class="eye-mask"><div class="eye-guide-ring" id="eye-target"></div></div>
                     <div class="signal-bar-container"><div class="signal-bar" id="signal-bar"></div></div>
                 </div>
@@ -315,7 +340,6 @@
             </div>
 
             <div class="util-row">
-                <button class="btn-util active" id="btn-sound" onclick="toggleSound()"><i data-lucide="volume-2" style="width:16px;"></i> Sound</button>
                 <button class="btn-util active" id="btn-breath" onclick="toggleBreathMenu()"><i data-lucide="wind" style="width:16px;"></i> <span id="breath-lbl">Normal</span></button>
             </div>
             
@@ -367,7 +391,7 @@
         <h2 style="color:var(--text-main); margin:0; font-size:1.5rem;">HEALTH REPORT</h2>
         <div style="font-size:0.8rem; color:var(--text-sub); margin-bottom:15px;" id="timestamp-str"></div>
         <div id="report-content"></div>
-        <button onclick="location.reload()" class="btn-main" style="margin-top:15px;">NEW SCAN</button>
+        <button onclick="resetScan()" class="btn-main" style="margin-top:15px;">NEW SCAN</button>
     </div>
 </div>
 
@@ -391,7 +415,7 @@
     const camFrame = document.getElementById('camFrame');
     const proc = document.getElementById('proc').getContext('2d');
     
-    // --- 1. CAMERA LOGIC (LAZY LOAD) ---
+    // --- 1. CAMERA LOGIC ---
     async function initCamera() {
         if(stream) return; 
         try {
@@ -403,15 +427,14 @@
                 video.classList.add('ready');
                 camFrame.classList.add('active-cam');
                 document.querySelector('.cam-placeholder').style.display = 'none';
-                if(currentTab === 'CARDIO') {
-                    document.getElementById('torch-btn').style.display = 'block';
-                }
                 requestAnimationFrame(loop);
             };
         } catch(e) {
-            alert("Camera Access Required");
+            console.log("Camera waiting for permission");
         }
     }
+    
+    initCamera(); // Auto start camera
 
     // --- 2. SWITCH TAB LOGIC ---
     function switchTab(tab) {
@@ -430,7 +453,6 @@
             document.getElementById('brand-bg').style.background = 'var(--accent-soft)';
             document.getElementById('brand-bg').style.color = 'var(--accent)';
             
-            if(stream) document.getElementById('torch-btn').style.display = 'block';
             toggleTorch(false); 
             resize(document.getElementById('graph'));
 
@@ -439,7 +461,6 @@
             mainCard.classList.add('neuro-active');
             
             document.getElementById('brand-badge').style.opacity = '0.3';
-            document.getElementById('torch-btn').style.display = 'none';
             document.getElementById('brand-bg').style.background = '#ede9fe';
             document.getElementById('brand-bg').style.color = 'var(--purple)';
             
@@ -450,10 +471,8 @@
     }
 
     // --- 3. UTILS ---
-    function toggleSound() { soundEnabled = !soundEnabled; document.getElementById('btn-sound').classList.toggle('active', soundEnabled); if(soundEnabled && !audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    
     function playBeep(freq = 800) { 
-        if(!soundEnabled || !audioCtx) return; 
+        if(!audioCtx) return; 
         const osc = audioCtx.createOscillator(); 
         const gain = audioCtx.createGain(); 
         osc.frequency.value = freq; 
@@ -481,13 +500,49 @@
         document.getElementById('breath-menu').style.display = 'none';
     }
 
+    function resetScan() {
+        document.getElementById('report-modal').style.display = 'none';
+        isScanning = false;
+        isNeuroTesting = false;
+        toggleTorch(false);
+
+        if(currentTab === 'CARDIO') {
+            document.getElementById('big-val').innerText = "--";
+            document.getElementById('stress-rt').innerText = "--";
+            document.getElementById('hrv-val').innerText = "--";
+            document.getElementById('pi-val').innerText = "--";
+            document.getElementById('status-msg').innerText = "Ready to scan";
+            document.getElementById('progress-fill').style.width = "0%";
+            document.getElementById('signal-bar').style.width = "0%";
+            document.getElementById('pre-start-btn').style.display = 'flex';
+            points = [];
+            signalBuffer = [];
+        } else {
+            document.getElementById('neuro-val').innerText = "--";
+            document.getElementById('constrict-val').innerText = "--";
+            document.getElementById('dilate-val').innerText = "--";
+            document.getElementById('neuro-msg').innerText = "Align eye in circle";
+            document.getElementById('progress-fill').style.width = "0%";
+            neuroPoints = [];
+            flashDone = false;
+            neuroState = 'PRE';
+        }
+    }
+
+    function clearCacheApp() {
+        if(confirm('Reset system and clear all data?')) {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload();
+        }
+    }
+
     async function toggleTorch(on) { 
         if(!stream) return; 
         const track = stream.getVideoTracks()[0]; 
         try { 
             await track.applyConstraints({ advanced: [{ torch: on }] }); 
             torchState = on; 
-            document.getElementById('torch-btn').style.color = on ? 'var(--accent)' : '#94a3b8';
         } catch(e) {} 
     }
     
@@ -505,13 +560,11 @@
         const input = document.getElementById('age-input').value;
         if(input) userAge = parseInt(input);
         
-        // --- Fix: Sound Init Immediately on User Click ---
         if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
         if(audioCtx.state === 'suspended') await audioCtx.resume();
 
         document.getElementById('age-modal').style.display = 'none';
         
-        // --- Then Start Camera ---
         await initCamera(); 
         await toggleTorch(true); 
         
@@ -693,8 +746,7 @@
         `;
         
         document.getElementById('report-modal').style.display = 'flex';
-        document.getElementById('pre-start-btn').style.display = 'flex';
-        lucide.createIcons();
+        toggleTorch(false);
     }
 
     // --- 5. NEURO LOGIC ---
