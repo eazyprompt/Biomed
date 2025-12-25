@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BioMed Pro: Authentic Restore</title>
+    <title>BioMed Pro: Derma Scanner</title>
     
     <link rel="icon" type="image/png" href="./icon.png">
     <meta name="mobile-web-app-capable" content="yes">
@@ -96,7 +96,7 @@
         .brand-icon-bg { background: var(--accent-soft); color: var(--accent); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
         .brand-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text-main); letter-spacing: -0.5px; }
 
-        /* --- CAMERA FRAME (Default) --- */
+        /* --- CAMERA FRAME --- */
         .cam-frame { 
             width: 56px; height: 56px; 
             border-radius: 16px; 
@@ -110,7 +110,9 @@
             display: flex; align-items: center; justify-content: center;
         }
         .cam-frame.active-cam { border-color: var(--accent); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
-        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: transform 0.5s; opacity: 0; }
+        
+        /* NON-MIRRORED VIDEO */
+        video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; opacity: 0; }
         video.ready { opacity: 1; }
         .cam-placeholder { position: absolute; color: #334155; pointer-events: none; }
 
@@ -140,23 +142,27 @@
             width: 170px; height: 170px; border-radius: 50%; border: 5px solid var(--purple);
             box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
         }
-        .glass-card.neuro-active video { transform: scaleX(-1) scale(2.0); }
+        .glass-card.neuro-active video { transform: scale(2.0); }
         .glass-card.neuro-active .neuro-crosshair { opacity: 1; }
 
-        /* DERMA (UPDATED: FIX OVERLAP) */
+        /* DERMA */
         .glass-card.derma-active .cam-frame {
             position: absolute; 
-            top: 180px; /* ขยับขึ้นเล็กน้อยเพื่อให้มีพื้นที่ด้านล่าง */
+            top: 190px; /* ขยับขึ้นนิดหน่อยเพื่อหนีปุ่มล่าง */
             left: 50%; transform: translateX(-50%);
-            width: 210px; /* ลดขนาดลงเล็กน้อยเพื่อให้พอดีกับพื้นที่ */
-            height: 210px; 
+            width: 220px; 
+            height: 220px; 
             border-radius: 50%; 
             border: 4px solid var(--teal);
             box-shadow: 0 0 40px rgba(20, 184, 166, 0.3);
             z-index: 10;
         }
-        .glass-card.derma-active video { transform: scaleX(-1) scale(1); }
+        .glass-card.derma-active video { transform: scale(1); }
         .glass-card.derma-active .derma-grid { opacity: 0.4; border-radius: 50%; }
+
+        /* Derma Color Themes based on Mode */
+        .glass-card.derma-active.mode-red .cam-frame { border-color: var(--danger); box-shadow: 0 0 40px rgba(239, 68, 68, 0.3); }
+        .glass-card.derma-active.mode-tex .cam-frame { border-color: var(--purple); box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); }
 
         .glass-card:not(.neuro-active):not(.derma-active) .fingerprint-guide { opacity: 1; }
 
@@ -192,10 +198,16 @@
 
         /* --- STATS & BUTTONS --- */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; z-index: 20; }
-        .stat-card { background: #f8fafc; padding: 12px 8px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; }
+        .stat-card { background: #f8fafc; padding: 10px 6px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; }
         .stat-lbl { font-size: 0.6rem; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
         .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text-main); font-weight: 600; }
         .stat-sub { font-size: 0.6rem; color: var(--text-sub); margin-top: 2px;}
+
+        /* DERMA STATS EMPHASIS */
+        /* Make the Status (Right Card) HUGE */
+        #d-stat-2 .stat-val { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; }
+        /* Make the Score (Left Card) SMALL & SUBTLE */
+        #d-stat-1 .stat-val { font-size: 1.1rem; color: var(--text-sub); font-weight: 600; }
 
         .util-row { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; flex-shrink: 0; }
         .btn-util { padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: #fff; color: var(--text-sub); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
@@ -209,10 +221,16 @@
         .btn-main:active { transform: scale(0.98); }
         .btn-main.purple { background: var(--purple); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
         .btn-main.teal { background: var(--teal); box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3); }
+        .btn-main.red { background: var(--danger); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
 
         .progress-bar { height: 4px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
         #progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.3s linear; }
         
+        /* --- DERMA TOGGLES --- */
+        .derma-toggles { display: flex; background: #e2e8f0; padding: 4px; border-radius: 12px; margin-bottom: 10px; z-index: 20; width: 100%; }
+        .dt-btn { flex: 1; padding: 8px; text-align: center; font-size: 0.7rem; font-weight: 700; color: var(--text-sub); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .dt-btn.active { background: #fff; color: var(--text-main); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
         /* --- LAYOUT LOGIC (HYBRID) --- */
         .view-section { display: none; flex-direction: column; height: 100%; width: 100%; }
         .view-section.active-view { display: flex; animation: fadeIn 0.4s ease; }
@@ -227,22 +245,27 @@
         #view-neuro .viz-box { height: 50px; border-color: var(--purple); flex-grow: 0; }
         #view-neuro .btn-main { margin-top: auto; }
 
-        /* Derma Layout (UPDATED: FIXED OVERLAP) */
+        /* Derma Layout (Adjusted for button space) */
         #view-derma { 
             padding-top: 0; 
-            justify-content: flex-start; /* ใช้ flex-start เพื่อคุมระยะห่างด้วย margin เอง */
+            justify-content: flex-start;
             gap: 10px;
             height: 100%;
-            padding-bottom: 10px; 
+            padding-bottom: 0; 
         }
         
         #view-derma .display-section { 
             margin-top: 10px; 
-            margin-bottom: 240px; /* <--- หัวใจสำคัญ: เว้นที่ 240px ให้กล้องวางได้ไม่ทับ Stats */
+            margin-bottom: 240px; /* Space for camera */
         }
         
         #view-derma .viz-box { display:none; }
-        #view-derma .btn-main { margin-top: auto; } /* ปุ่มชิดล่าง */
+        
+        /* Lift the button up */
+        #view-derma .btn-main { 
+            margin-top: auto; 
+            margin-bottom: 30px; /* Prevent being too close to edge */
+        } 
 
         .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; z-index: 20; }
 
@@ -380,17 +403,31 @@
 
         <div id="view-derma" class="view-section">
             <div class="display-section">
-                <div class="main-label">SKIN OIL MAP</div>
-                <div class="main-value" id="derma-val">--%</div>
-                <div id="derma-msg" style="font-size:0.8rem; color:var(--text-sub);">Scan T-Zone for Shine</div>
+                <div class="main-label" id="derma-main-lbl">SKIN OIL MAP</div>
+                <div class="main-value" id="derma-val">--</div>
+                <div id="derma-msg" style="font-size:0.8rem; color:var(--text-sub);">Scan Face Center</div>
+            </div>
+
+            <div class="derma-toggles">
+                <div class="dt-btn active" onclick="setDermaMode('OIL', this)">OIL</div>
+                <div class="dt-btn" onclick="setDermaMode('RED', this)">REDNESS</div>
+                <div class="dt-btn" onclick="setDermaMode('TEX', this)">TEXTURE</div>
             </div>
 
             <div class="neuro-grid">
-                <div class="stat-card" style="border-color:var(--teal);"><div class="stat-lbl">SHINE LEVEL</div><div class="stat-val" id="oil-score">--</div><div class="stat-sub">SCORE</div></div>
-                <div class="stat-card" style="border-color:var(--teal);"><div class="stat-lbl">CLOG RISK</div><div class="stat-val" id="clog-risk">--</div><div class="stat-sub">LEVEL</div></div>
+                <div class="stat-card" id="d-stat-1" style="border-color:var(--teal);">
+                    <div class="stat-lbl" id="d-lbl-1">SHINE LEVEL</div>
+                    <div class="stat-val" id="d-val-1">--</div>
+                    <div class="stat-sub" id="d-sub-1">SCORE</div>
+                </div>
+                <div class="stat-card" id="d-stat-2" style="border-color:var(--teal);">
+                    <div class="stat-lbl" id="d-lbl-2">CLOG RISK</div>
+                    <div class="stat-val" id="d-val-2">--</div>
+                    <div class="stat-sub" id="d-sub-2">LEVEL</div>
+                </div>
             </div>
 
-            <button class="btn-main teal" onclick="startDerma()">
+            <button class="btn-main teal" id="btn-derma" onclick="startDerma()">
                 <i data-lucide="scan-face"></i> SCAN SKIN SURFACE
             </button>
         </div>
@@ -501,6 +538,9 @@
             bg.style.background = '#ccfbf1';
             bg.style.color = 'var(--teal)';
             bg.innerHTML = '<i data-lucide="droplets" style="width:20px;"></i>';
+            // Sync with current derma mode color
+            if(dermaMode === 'RED') card.classList.add('mode-red');
+            if(dermaMode === 'TEX') card.classList.add('mode-tex');
             toggleTorch(false);
         }
         lucide.createIcons();
@@ -567,16 +607,10 @@
             flashDone = false;
             neuroState = 'PRE';
         } else if(currentTab === 'DERMA') {
-            document.getElementById('derma-val').innerText = "--%";
-            document.getElementById('oil-score').innerText = "--";
-            document.getElementById('clog-risk').innerText = "--";
-            
-            // RESET COLORS
-            document.getElementById('oil-score').style.color = "var(--text-main)";
-            document.getElementById('clog-risk').style.color = "var(--text-main)";
-            
-            document.getElementById('derma-msg').innerText = "Scan T-Zone for Shine";
+            resetDermaStats();
+            document.getElementById('derma-val').innerText = "--";
             document.getElementById('progress-fill').style.width = "0%";
+            document.getElementById('derma-msg').innerText = "Scan Face Center";
         }
     }
 
@@ -810,7 +844,7 @@
         toggleTorch(false);
     }
 
-    // --- 5. NEURO LOGIC (UPDATED: REALTIME) ---
+    // --- 5. NEURO LOGIC (REALTIME) ---
     let neuroPoints = [], neuroStartT, flashDone = false, lastBri = 0, stability = 0;
     let neuroState = 'PRE';
     let baselineBri = 0;
@@ -832,10 +866,9 @@
         isNeuroTesting = true; neuroPoints = []; neuroStartT = Date.now(); flashDone = false;
         neuroState = 'PRE';
         baselineBri = 0; baselineCount = 0; minBri = 255;
-        minBriTime = 0; // Reset
+        minBriTime = 0; 
         
         document.getElementById('neuro-val').innerText = "TESTING";
-        // เปลี่ยนค่าเริ่มต้นเป็น 0 เพื่อรอวิ่ง Realtime
         document.getElementById('constrict-val').innerText = "0"; 
         document.getElementById('dilate-val').innerText = "0.00";
     }
@@ -881,31 +914,21 @@
             }, 400); 
         }
         else if (neuroState === 'POST') {
-            // Phase 3: Response (Realtime Calculation)
             const timeSinceFlash = Date.now() - flashEndTime;
             
-            if(timeSinceFlash > 100) { // รอแสงแฟลชหายไปจริงๆ สักนิด
-                
-                // 1. Realtime Constriction: หาจุดที่มืดที่สุด (รูม่านตาหดสุด)
+            if(timeSinceFlash > 100) { 
                 if (bri < minBri) {
                     minBri = bri;
                     minBriTime = timeSinceFlash;
                     
-                    // แสดงตัวเลขวิ่งทันที: เวลาที่ใช้ในการหดตัว
-                    // Cap ไว้ไม่ให้เกิน 500ms เพื่อความสมจริง (Reaction time มนุษย์)
                     let showConstrict = Math.min(timeSinceFlash, 500);
                     document.getElementById('constrict-val').innerText = showConstrict;
                 }
 
-                // 2. Realtime Dilation: นับเวลาหลังจากจุดหดตัวที่สุด
                 if (minBriTime > 0) {
-                    // เวลาปัจจุบัน - เวลาที่หดตัวสุด = เวลาที่ใช้ในการขยายตัว
                     let dilationCurrent = Math.max(0, timeSinceFlash - minBriTime);
-                    
-                    // แสดงผลเป็นวินาที วิ่งตลอดเวลา
                     document.getElementById('dilate-val').innerText = (dilationCurrent / 1000).toFixed(2);
                     
-                    // Logic เช็ค Dilation (Recovery)
                     const recoveryThreshold = minBri + ((baselineBri - minBri) * 0.6); 
                     if (timeSinceFlash > 1000 && bri > recoveryThreshold && dilationTime === 0) {
                         dilationTime = timeSinceFlash;
@@ -990,10 +1013,66 @@
         toggleTorch(false);
     }
 
-    // --- 6. DERMA LOGIC (REAL-TIME UPDATE) ---
+    // --- 6. DERMA LOGIC (MULTI-MODE, ADAPTIVE) ---
     let dermaStartT = 0;
-    let dermaShinyPixels = 0; 
-    let dermaTotalPixels = 0; 
+    let dermaMode = 'OIL'; // OIL, RED, TEX
+    let dValSmooth = 0;
+    let lastLuma = -1;
+
+    function setDermaMode(mode, el) {
+        if(isDermaScanning) return; // Prevent switch during scan
+        dermaMode = mode;
+        
+        // Update Buttons
+        document.querySelectorAll('.dt-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+
+        // Update Labels & Colors
+        const card = document.getElementById('main-card');
+        const mainLbl = document.getElementById('derma-main-lbl');
+        const btn = document.getElementById('btn-derma');
+        const lbl1 = document.getElementById('d-lbl-1');
+        const lbl2 = document.getElementById('d-lbl-2');
+        
+        card.classList.remove('mode-red', 'mode-tex');
+        btn.classList.remove('teal', 'red', 'purple');
+        document.getElementById('d-stat-1').style.borderColor = 'var(--border-color)';
+        document.getElementById('d-stat-2').style.borderColor = 'var(--border-color)';
+
+        if(mode === 'OIL') {
+            mainLbl.innerText = "SKIN OIL MAP";
+            lbl1.innerText = "SHINE LEVEL"; lbl2.innerText = "CLOG RISK";
+            btn.classList.add('teal');
+            document.getElementById('d-stat-1').style.borderColor = 'var(--teal)';
+            document.getElementById('d-stat-2').style.borderColor = 'var(--teal)';
+        } else if(mode === 'RED') {
+            mainLbl.innerText = "REDNESS RADAR";
+            lbl1.innerText = "REDNESS"; lbl2.innerText = "HOTSPOT";
+            card.classList.add('mode-red');
+            btn.classList.add('red');
+            document.getElementById('d-stat-1').style.borderColor = 'var(--danger)';
+            document.getElementById('d-stat-2').style.borderColor = 'var(--danger)';
+        } else if(mode === 'TEX') {
+            mainLbl.innerText = "TEXTURE MAP";
+            lbl1.innerText = "ROUGHNESS"; lbl2.innerText = "SMOOTHNESS";
+            card.classList.add('mode-tex');
+            btn.classList.add('purple');
+            document.getElementById('d-stat-1').style.borderColor = 'var(--purple)';
+            document.getElementById('d-stat-2').style.borderColor = 'var(--purple)';
+        }
+
+        resetDermaStats();
+    }
+
+    function resetDermaStats() {
+        document.getElementById('derma-val').innerText = "--";
+        document.getElementById('d-val-1').innerText = "--";
+        document.getElementById('d-val-2').innerText = "--";
+        const ctx = document.getElementById('derma-overlay').getContext('2d');
+        ctx.clearRect(0, 0, 200, 200);
+        dValSmooth = 0;
+        lastLuma = -1;
+    }
 
     async function startDerma() {
         await initCamera();
@@ -1001,8 +1080,8 @@
         if(audioCtx.state === 'suspended') await audioCtx.resume();
 
         isDermaScanning = true; dermaStartT = Date.now();
-        dermaShinyPixels = 0; dermaTotalPixels = 0; 
-
+        resetDermaStats();
+        
         document.getElementById('derma-val').innerText = "SCANNING";
         document.getElementById('derma-msg').innerText = "Align Face in Frame...";
         
@@ -1017,18 +1096,21 @@
 
         const overlay = document.getElementById('derma-overlay');
         const oCtx = overlay.getContext('2d');
-        
         oCtx.clearRect(0, 0, overlay.width, overlay.height);
 
         proc.drawImage(video, 0, 0, 50, 50);
         const frame = proc.getImageData(0, 0, 50, 50);
         const data = frame.data;
         
-        let shinyCount = 0;
-        let skinCount = 0; 
-        
+        // --- PASS 1: GATHER DATA & STATS ---
+        let skinVals = [];
+        let lumaSum = 0;
+
         const cellW = overlay.width / 50; 
         const cellH = overlay.height / 50;
+        
+        let metrics = new Float32Array(2500); 
+        let isSkinArr = new Uint8Array(2500);
 
         for(let y=0; y<50; y++) {
             for(let x=0; x<50; x++) {
@@ -1037,114 +1119,171 @@
                 const g = data[i+1];
                 const b = data[i+2];
                 const l = 0.299*r + 0.587*g + 0.114*b;
+                
+                lumaSum += l;
 
-                // 1. Check Skin Tone
+                // Skin Check
                 if (isSkinPixel(r, g, b)) {
-                    skinCount++;
+                    isSkinArr[y*50+x] = 1;
+                    let val = 0;
                     
-                    // 2. Check Shine
-                    const isOily = (l > 170); 
+                    if(dermaMode === 'OIL') {
+                        val = l; // Luma for Shine
+                    } else if (dermaMode === 'RED') {
+                        val = (r / (g + b + 1)) * 100; 
+                    } else if (dermaMode === 'TEX') {
+                        let neighborL = l;
+                        if(x < 49) {
+                           let iN = (y*50 + (x+1)) * 4;
+                           neighborL = 0.299*data[iN] + 0.587*data[iN+1] + 0.114*data[iN+2];
+                        }
+                        val = Math.abs(l - neighborL);
+                    }
 
-                    if (isOily) {
-                        shinyCount++;
-                        oCtx.fillStyle = "rgba(20, 184, 166, 0.8)"; 
-                        oCtx.fillRect(x*cellW, y*cellH, cellW-1, cellH-1);
+                    metrics[y*50+x] = val;
+                    skinVals.push(val);
+                }
+            }
+        }
+
+        // --- GLOBAL FRAME CHECKS ---
+        const avgLuma = lumaSum / 2500;
+        let confidence = "High";
+        
+        if(avgLuma < 40) confidence = "Too Dark";
+        else if(avgLuma > 240) confidence = "Too Bright";
+
+        if(lastLuma !== -1 && Math.abs(avgLuma - lastLuma) > 15) {
+            confidence = "Hold Still";
+        }
+        lastLuma = avgLuma;
+
+        if(confidence !== "High") {
+            document.getElementById('derma-msg').innerText = confidence;
+            document.getElementById('derma-msg').style.color = "var(--warning)";
+            return; 
+        } else {
+            document.getElementById('derma-msg').innerText = "Analyzing...";
+            document.getElementById('derma-msg').style.color = "var(--text-sub)";
+        }
+
+        if(skinVals.length < 100) {
+             document.getElementById('derma-msg').innerText = "Face not detected";
+             return;
+        }
+
+        // --- ADAPTIVE THRESHOLDS ---
+        let sum = skinVals.reduce((a,b)=>a+b, 0);
+        let mean = sum / skinVals.length;
+        let variance = skinVals.reduce((a,b)=>a + Math.pow(b-mean, 2), 0) / skinVals.length;
+        let stdDev = Math.sqrt(variance);
+
+        let threshold = 0;
+        if(dermaMode === 'OIL') threshold = mean + (1.0 * stdDev);
+        else if(dermaMode === 'RED') threshold = mean + (1.2 * stdDev);
+        else if(dermaMode === 'TEX') threshold = mean + (1.0 * stdDev);
+
+        // --- PASS 2: RENDER OVERLAY & COUNT ---
+        let countAbove = 0;
+        
+        for(let y=0; y<50; y++) {
+            for(let x=0; x<50; x++) {
+                if(isSkinArr[y*50+x]) {
+                    let val = metrics[y*50+x];
+                    
+                    if(val > threshold) {
+                        countAbove++;
+                        if(dermaMode === 'OIL') oCtx.fillStyle = "rgba(20, 184, 166, 0.6)"; 
+                        else if(dermaMode === 'RED') oCtx.fillStyle = "rgba(239, 68, 68, 0.5)"; 
+                        else if(dermaMode === 'TEX') oCtx.fillStyle = "rgba(139, 92, 246, 0.5)"; 
+                        
+                        oCtx.fillRect(x*cellW, y*cellH, cellW-0.5, cellH-0.5);
                     } else {
-                        oCtx.fillStyle = "rgba(255, 255, 255, 0.1)"; 
-                        oCtx.fillRect(x*cellW, y*cellH, cellW, cellH);
+                         oCtx.fillStyle = "rgba(255, 255, 255, 0.05)";
+                         oCtx.fillRect(x*cellW, y*cellH, cellW, cellH);
                     }
                 }
             }
         }
 
-        if(skinCount > 10) { 
-            const currentRatio = (shinyCount / skinCount) * 100;
-            
-            if(dermaTotalPixels === 0) {
-                dermaShinyPixels = currentRatio; 
-            } else {
-                dermaShinyPixels = (dermaShinyPixels * 0.9) + (currentRatio * 0.1);
-            }
-            dermaTotalPixels = 1; 
-            
-            // --- REAL-TIME DISPLAY LOGIC ---
-            let rtOilScore = Math.min(100, Math.round(dermaShinyPixels * 2.5));
-            let rtClogLevel = "Low";
-            let rtClogColor = "var(--success)";
+        // --- UPDATE STATS ---
+        let rawScore = (countAbove / skinVals.length) * 100;
+        dValSmooth = (dValSmooth * 0.8) + (rawScore * 0.2); 
+        
+        let displayScore = Math.min(100, Math.round(dValSmooth * 3)); 
+        if(displayScore > 100) displayScore = 100;
 
-            if(dermaShinyPixels > 25) { 
-                rtClogLevel = "High"; 
-                rtClogColor = "var(--danger)"; 
-            }
-            else if(dermaShinyPixels > 15) { 
-                rtClogLevel = "Oily"; 
-                rtClogColor = "var(--warning)"; 
-            }
+        document.getElementById('derma-val').innerText = dValSmooth.toFixed(1) + "%";
+        
+        // --- UPDATED STAT DISPLAY LOGIC (EMPHASIS ON STATUS) ---
+        // Score is small (Left card)
+        document.getElementById('d-val-1').innerText = displayScore;
 
-            document.getElementById('derma-val').innerText = dermaShinyPixels.toFixed(1) + "%";
-            
-            // Update Stats Box
-            document.getElementById('oil-score').innerText = rtOilScore;
-            document.getElementById('clog-risk').innerText = rtClogLevel;
-            document.getElementById('clog-risk').style.color = rtClogColor;
+        let lvl = "LOW";
+        let lvlColor = "var(--success)";
 
-            document.getElementById('derma-msg').innerText = "Analyzing Surface...";
-        } else {
-            document.getElementById('derma-msg').innerText = "Face not detected"; 
+        if(displayScore > 60) { lvl = "HIGH"; lvlColor = "var(--danger)"; }
+        else if(displayScore > 30) { lvl = "MED"; lvlColor = "var(--warning)"; }
+        
+        if(dermaMode === 'TEX') {
+             if(displayScore > 60) lvl = "ROUGH";
+             else if(displayScore > 30) lvl = "NORMAL";
+             else lvl = "SMOOTH";
         }
 
+        // Status is HUGE (Right card)
+        document.getElementById('d-val-2').innerText = lvl;
+        document.getElementById('d-val-2').style.color = lvlColor;
+
         if(t > 4000) {
-            finishDerma();
+            finishDerma(displayScore, lvl, lvlColor);
         }
     }
 
-    function finishDerma() {
+    function finishDerma(score, lvl, color) {
         isDermaScanning = false;
         toggleTorch(false);
-
-        const ratio = dermaShinyPixels || 0;
-        let oilScore = Math.min(100, Math.round(ratio * 2.5)); 
-        
-        let clogLevel = "Low"; // Default was Normal/Low
-        let clogColor = "var(--success)";
-
-        if(ratio > 25) { 
-            clogLevel = "High"; 
-            clogColor = "var(--danger)"; 
-        }
-        else if(ratio > 15) { 
-            clogLevel = "Oily"; 
-            clogColor = "var(--warning)"; 
-        }
-
-        document.getElementById('derma-val').innerText = ratio.toFixed(1) + "%";
-        document.getElementById('oil-score').innerText = oilScore;
-        document.getElementById('clog-risk').innerText = clogLevel;
-        document.getElementById('clog-risk').style.color = clogColor;
         document.getElementById('derma-msg').innerText = "Analysis Complete";
+
+        let title = "";
+        let scoreLabel = "";
+        let rec = "";
+        let subRec = "";
+
+        if(dermaMode === 'OIL') {
+            title = "SEBUM CONTROL";
+            scoreLabel = "SHINE INDEX";
+            rec = score > 60 ? "Excess sebum detected. Pores may be congested." : "Sebum levels are balanced.";
+            subRec = score > 60 ? "Try Salicylic Acid or Niacinamide." : "Maintain hydration.";
+        } else if(dermaMode === 'RED') {
+            title = "SENSITIVITY SCAN";
+            scoreLabel = "REDNESS INTENSITY";
+            rec = score > 60 ? "Inflammation or heat detected." : "Skin tone appears even.";
+            subRec = score > 60 ? "Use soothing ingredients like Centella or Aloe." : "Protect with SPF.";
+        } else if(dermaMode === 'TEX') {
+            title = "SURFACE TEXTURE";
+            scoreLabel = "ROUGHNESS SCORE";
+            rec = score > 60 ? "Uneven skin texture detected." : "Skin surface is smooth.";
+            subRec = score > 60 ? "Consider gentle exfoliation (AHA/BHA)." : "Keep moisturizing.";
+        }
 
         document.getElementById('timestamp-str').innerText = new Date().toLocaleString();
         
+        // REPORT LAYOUT: Status (Hero) > Score (Subtle)
         document.getElementById('report-content').innerHTML = `
             <div style="text-align:center; margin-bottom:20px; padding-bottom:15px; border-bottom:1px dashed #e2e8f0;">
-                <div style="font-size:0.7rem; color:var(--text-sub); letter-spacing:1px; font-weight:700;">SEBUM CONTROL</div>
-                <div style="font-family:'JetBrains Mono'; font-size:3rem; font-weight:800; color:var(--teal); line-height:1;">${Math.max(0, 100 - oilScore)}</div>
-                <div style="font-size:0.8rem; color:${clogColor}; font-weight:600; margin-top:5px;">Status: ${clogLevel}</div>
+                <div style="font-size:0.7rem; color:var(--text-sub); letter-spacing:1px; font-weight:700;">${title}</div>
+                
+                <div style="font-size:2.5rem; color:${color}; font-weight:800; margin: 10px 0; letter-spacing: -1px;">${lvl}</div>
+                
+                <div style="font-family:'JetBrains Mono'; font-size:1rem; color:var(--text-main); font-weight:600;">
+                    ${scoreLabel}: <span style="font-size:1.2rem">${score}/100</span>
+                </div>
             </div>
 
-            <div class="report-header" style="color:var(--teal);">DERMA SCAN</div>
-            
-            <div class="report-row"><span>T-Zone Shine</span><b style="color:var(--text-main); font-size:1.1rem">${ratio.toFixed(1)}%</b></div>
-            <div class="report-row"><span>Oil Intensity</span><b>${oilScore}/100</b></div>
-
-            <div class="report-header" style="color:var(--teal); margin-top:15px;">RECOMMENDATION</div>
-            <div style="font-size:0.8rem; color:var(--text-sub); line-height:1.4;">
-                ${ratio > 25 
-                    ? "Detected high sebum production. High risk of comedones. Consider using Niacinamide or Salicylic Acid." 
-                    : ratio > 15
-                    ? "Moderate shine detected. Standard balancing routine recommended. Use oil-free moisturizer."
-                    : "Excellent balance. Healthy skin barrier detected. Keep hydrating."}
-            </div>
+            <div class="report-header" style="color:${color}; margin-top:15px;">ANALYSIS</div>
+            <div style="font-size:0.9rem; color:var(--text-main); line-height:1.4; font-weight:600; margin-bottom:5px;">${rec}</div>
+            <div style="font-size:0.8rem; color:var(--text-sub); line-height:1.4;">${subRec}</div>
         `;
         document.getElementById('report-modal').style.display = 'flex';
     }
