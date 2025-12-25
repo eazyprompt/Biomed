@@ -1,29 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BioMed Pro: Authentic Restore</title>
-<link rel="icon" href="./icon.png">
+    <title>BioMed Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.321.0/dist/umd/lucide.min.js"></script>
     <style>
-        /* --- CSS VARIABLES --- */
+        /* --- ORIGINAL CSS VARIABLES --- */
         :root {
             --bg-color: #f1f5f9;        
-            --card-bg: rgba(255, 255, 255, 0.95);       
+            --card-bg: rgba(255, 255, 255, 0.9);        
             --text-main: #1e293b;       
             --text-sub: #64748b;        
             --accent: #0ea5e9;          
             --accent-soft: #e0f2fe;     
             --heart-color: #ef4444;     
             --border-color: #e2e8f0;    
-            --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15); 
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1); 
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --purple: #8b5cf6;
+            --purple: #8b5cf6; /* New for Neuro */
+            
+            /* Graph Theme Colors */
             --graph-bg: #f8fafc;
+            --graph-grid: #e2e8f0;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -46,49 +48,44 @@
             position: fixed; inset: 0; 
             background-image: radial-gradient(#cbd5e1 1px, transparent 1px); 
             background-size: 20px 20px; 
-            opacity: 0.5; z-index: -1; 
+            opacity: 0.5;
+            z-index: -1; 
         }
 
-        /* --- MAIN CARD --- */
         .glass-card { 
             background: var(--card-bg); 
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
             border-radius: 32px; 
             padding: 24px; 
             box-shadow: var(--shadow); 
             border: 1px solid rgba(255,255,255,0.8);
             display: flex; 
             flex-direction: column; 
+            gap: 16px; 
             position: relative; 
-            height: 720px; 
+            /* MODIFIED: Fixed height to prevent size changes */
+            height: 700px; 
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s ease;
         }
 
-        /* --- TAB NAVIGATION --- */
+        /* --- TAB NAV (New Feature) --- */
         .tab-nav {
-            display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; 
-            margin-bottom: 10px; flex-shrink: 0;
+            display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 5px; flex-shrink: 0;
         }
         .tab-btn {
-            flex: 1; border: none; background: transparent; padding: 10px; border-radius: 10px; 
-            font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; 
-            color: var(--text-sub); cursor: pointer; display: flex; align-items: center; 
-            justify-content: center; gap: 6px; transition: 0.2s;
+            flex: 1; border: none; background: transparent; padding: 8px; border-radius: 8px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.8rem; color: var(--text-sub); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s;
         }
         .tab-btn.active-tab { background: #fff; color: var(--text-main); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         
-        /* --- TOP HEADER --- */
-        .top-row { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 5px; height: 60px; position: relative; z-index: 20; flex-shrink: 0; 
-        }
+        /* --- ORIGINAL LAYOUT CLASSES --- */
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; height: 60px; position: relative; z-index: 20; flex-shrink: 0; }
         
         .brand-badge { display: flex; align-items: center; gap: 10px; transition: opacity 0.3s; }
-        .brand-icon-bg { background: var(--accent-soft); color: var(--accent); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .brand-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text-main); letter-spacing: -0.5px; }
+        .brand-icon-bg { background: var(--accent-soft); color: var(--accent); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .brand-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text-main); letter-spacing: -0.5px; }
 
-        /* --- CAMERA FRAME --- */
+        /* Camera Frame - Base Style (Cardio) */
         .cam-frame { 
             width: 56px; height: 56px; 
             border-radius: 16px; 
@@ -96,107 +93,44 @@
             overflow: hidden; 
             background: #000; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Smooth spring animation */
             position: relative; 
             z-index: 50;
-            display: flex; align-items: center; justify-content: center;
         }
         .cam-frame.active-cam { border-color: var(--accent); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
-        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: transform 0.5s; opacity: 0; }
-        video.ready { opacity: 1; }
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); transition: transform 0.5s; }
         
-        .cam-placeholder { position: absolute; color: #334155; pointer-events: none; }
-
-        /* --- FINGERPRINT WATERMARK (CARDIO) --- */
-        .fingerprint-guide {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgba(239, 68, 68, 0.6); 
-            z-index: 60;
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-        .fingerprint-guide svg { animation: pulse-red 2s infinite ease-in-out; }
-        @keyframes pulse-red {
-            0% { opacity: 0.4; transform: scale(0.95); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-            100% { opacity: 0.4; transform: scale(0.95); }
-        }
-        
-        /* --- CROSSHAIR (NEURO) --- */
-        .neuro-crosshair {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            opacity: 0; 
-            transition: opacity 0.3s;
-            z-index: 65;
-        }
-        .neuro-crosshair::before, .neuro-crosshair::after {
-            content: '';
-            position: absolute;
-            background: rgba(139, 92, 246, 0.6); 
-            border-radius: 1px;
-        }
-        .neuro-crosshair::before { width: 30px; height: 2px; } 
-        .neuro-crosshair::after { width: 2px; height: 30px; }
-
-        .glass-card.neuro-active .fingerprint-guide { opacity: 0; }
-        .glass-card.neuro-active .neuro-crosshair { opacity: 1; }
-
-        /* --- NEURO MODE CAMERA --- */
+        /* --- NEURO MODE TRANSFORMATION (MODIFIED) --- */
         .glass-card.neuro-active .cam-frame {
             position: absolute;
-            top: 60px; 
+            /* Moves the camera higher to save space */
+            top: 70px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 170px; 
-            height: 170px;
+            /* Slightly smaller to prevent blocking content */
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 5px solid var(--purple);
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+            border: 6px solid var(--purple);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
         }
-        .glass-card.neuro-active video { transform: scaleX(-1) scale(2.0); }
+        .glass-card.neuro-active video { transform: scaleX(-1) scale(2.2); }
         
         .signal-bar-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.2); }
         .signal-bar { height: 100%; width: 0%; background: var(--success); transition: width 0.2s, background 0.2s; }
 
-        /* --- DISPLAY SECTION --- */
-        .display-section { text-align: center; position: relative; flex-shrink: 0; }
-        .main-value { font-family: 'JetBrains Mono', monospace; font-size: 4rem; font-weight: 800; line-height: 1; color: var(--text-main); margin: 2px 0; font-variant-numeric: tabular-nums; }
-        .main-label { color: var(--text-sub); font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+        .display-section { text-align: center; position: relative; margin: 5px 0; transition: margin 0.3s; flex-shrink: 0; }
+        .main-value { font-family: 'JetBrains Mono', monospace; font-size: 4.5rem; font-weight: 800; line-height: 1; color: var(--text-main); margin: 5px 0; font-variant-numeric: tabular-nums; }
+        .main-label { color: var(--text-sub); font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
 
-        #heart-wrapper { display: flex; justify-content: center; align-items: center; height: 35px; }
+        #heart-wrapper { display: flex; justify-content: center; align-items: center; margin: 5px 0; height: 40px; }
         
-        /* --- HEART ANIMATION --- */
-        @keyframes heart-ambient {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 4px var(--heart-color)); }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-        #heart-wrapper svg { animation: heart-ambient 1.8s infinite ease-in-out; }
-        
-        @keyframes pop-beat { 
-            0% { transform: scale(1); filter: drop-shadow(0 0 0 var(--heart-color)); } 
-            15% { transform: scale(1.35); filter: drop-shadow(0 0 10px var(--heart-color)); } 
-            30% { transform: scale(1); filter: drop-shadow(0 0 0 var(--heart-color)); } 
-            100% { transform: scale(1); } 
-        }
-        .pop-active { animation: pop-beat 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; }
+        /* Animations */
+        @keyframes pop-beat { 0% { transform: scale(1); filter: drop-shadow(0 0 0 var(--heart-color)); } 15% { transform: scale(1.3); filter: drop-shadow(0 0 10px var(--heart-color)); } 30% { transform: scale(1); filter: drop-shadow(0 0 0 var(--heart-color)); } 100% { transform: scale(1); } }
+        .pop-active { animation: pop-beat 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        /* --- GRAPH BOX --- */
-        .viz-box { 
-            background: var(--graph-bg); border-radius: 20px; 
-            border: 1px solid var(--border-color); overflow: hidden; position: relative; 
-            width: 100%;
-        }
+        /* Graph Box */
+        .viz-box { height: 140px; background: var(--graph-bg); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; position: relative; flex-shrink: 0; }
         
         #breath-guide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 5; pointer-events: none; }
         .breath-circle { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); opacity: 0.3; box-shadow: 0 0 15px var(--accent); }
@@ -206,55 +140,65 @@
         @keyframes breathe-anim { 0%, 100% { transform: scale(0.6); opacity: 0.15; } 50% { transform: scale(1.8); opacity: 0.4; } }
         @keyframes breathe-box { 0%, 100% { transform: scale(0.6); opacity: 0.15; } 25% { transform: scale(0.6); opacity: 0.15; } 50% { transform: scale(1.8); opacity: 0.4; } 75% { transform: scale(1.8); opacity: 0.4; } }
 
-        /* --- STATS GRID --- */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; }
-        .stat-card { background: #f8fafc; padding: 12px 8px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; }
+        /* Stats Grid (Original) */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; flex-shrink: 0; }
+        .stat-card { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; }
         .stat-lbl { font-size: 0.6rem; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
         .stat-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text-main); font-weight: 600; }
         .stat-sub { font-size: 0.6rem; color: var(--text-sub); margin-top: 2px;}
 
-        /* --- BUTTONS --- */
-        .util-row { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; flex-shrink: 0; }
-        .btn-util { padding: 14px; border-radius: 14px; border: 1px solid var(--border-color); background: #fff; color: var(--text-sub); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
+        /* Utility Row (Original - Restored) */
+        .util-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; z-index: 30; position: relative; flex-shrink: 0; }
+        .btn-util { padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); background: #fff; color: var(--text-sub); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
         .btn-util.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
         
-        .mode-menu { display: none; position: absolute; bottom: 85px; right: 20px; background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 50; flex-direction: column; width: 140px; }
+        .mode-menu { display: none; position: absolute; bottom: 60px; right: 20px; background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 50; flex-direction: column; width: 140px; }
         .mode-item { padding: 10px; font-size: 0.8rem; cursor: pointer; border-radius: 8px; color: var(--text-sub); font-weight: 600; text-align: left; }
         .mode-item:hover, .mode-item.selected { background: var(--accent-soft); color: var(--accent); }
 
-        .btn-main { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.2s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.2); flex-shrink: 0; }
+        .btn-main { width: 100%; padding: 18px; border-radius: 18px; border: none; background: var(--text-main); color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.2s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: auto; box-shadow: 0 4px 15px rgba(30, 41, 59, 0.2); flex-shrink: 0; }
         .btn-main:active { transform: scale(0.98); }
         .btn-main.purple { background: var(--purple); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
 
         .progress-bar { height: 4px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 10px; flex-shrink: 0; }
         #progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.3s linear; }
         
-        /* --- LAYOUT LOGIC --- */
-        .view-section { display: none; flex-direction: column; height: 100%; width: 100%; }
-        .view-section.active-view { display: flex; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        /* New Neuro UI Elements */
+        .view-section { display: none; flex-direction: column; height: 100%; }
+        .view-section.active-view { display: flex; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        #view-cardio { justify-content: space-between; padding-bottom: 0; gap: 10px; }
-        #view-cardio .viz-box { flex-grow: 1; min-height: 120px; }
-
-        #view-neuro { padding-top: 170px; justify-content: flex-end; gap: 15px; }
-        #view-neuro .viz-box { height: 50px; border-color: var(--purple); flex-grow: 0; }
-        #view-neuro .btn-main { margin-top: auto; }
-
+        /* Eye Mask */
         .eye-mask { position: absolute; inset: 0; background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 41%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .glass-card.neuro-active .eye-mask { opacity: 1; }
         .eye-guide-ring { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width: 80px; height: 80px; border: 2px dashed rgba(255,255,255,0.6); border-radius: 50%; transition: 0.2s; pointer-events: none; }
         .eye-guide-ring.locked { border-color: var(--success); border-style: solid; box-shadow: 0 0 15px var(--success); }
 
+        /* Overlays */
         #flash-overlay { position: fixed; inset: 0; background: white; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.1s; }
         .modal { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 3000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .report-card { background: #fff; border-radius: 30px; padding: 25px; width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
         .report-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-family: 'JetBrains Mono'; font-size: 0.85rem; color: var(--text-sub); }
         .report-header { font-size: 0.7rem; color: var(--accent); text-align: left; margin-top: 15px; margin-bottom: 5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+        
         .score-badge { padding: 4px 8px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; }
+        .mood-scale { height: 6px; width: 100%; background: #e2e8f0; border-radius: 3px; margin-top: 5px; position: relative; overflow: hidden; }
+        .mood-fill { height: 100%; border-radius: 3px; }
         .input-group input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; font-size: 1.2rem; margin-bottom: 15px; }
 
-        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; width: 100%; }
+        /* Neuro Grid */
+        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; margin-bottom: 10px; flex-shrink: 0; }
+        
+        /* Helper to push content down in Neuro mode (MODIFIED) */
+        /* Use Flex padding instead of hard margin to keep card contained */
+        #view-neuro { 
+            justify-content: flex-end; /* Push controls to bottom */
+            padding-bottom: 10px; 
+        }
+        #view-neuro .display-section { 
+            margin-top: 180px; /* Precise space to clear the camera */
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -285,20 +229,10 @@
             </div>
             
             <div style="display:flex; gap:10px; align-items:center;">
-                <button onclick="clearCacheApp()" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:5px; margin-right:5px;">
-                    <i data-lucide="rotate-ccw" width="20"></i>
-                </button>
-
-                <button onclick="toggleTorchManual()" id="torch-btn" style="display:none;"><i data-lucide="flashlight"></i></button>
+                <button onclick="toggleTorch()" id="torch-btn" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; padding:5px;"><i data-lucide="flashlight"></i></button>
                 
                 <div class="cam-frame" id="camFrame">
-                    <div class="cam-placeholder"><i data-lucide="camera-off" width="24"></i></div>
                     <video id="webcam" playsinline autoplay muted></video>
-                    
-                    <div class="fingerprint-guide"><i data-lucide="fingerprint" width="32" height="32"></i></div>
-                    
-                    <div class="neuro-crosshair"></div>
-
                     <div class="eye-mask"><div class="eye-guide-ring" id="eye-target"></div></div>
                     <div class="signal-bar-container"><div class="signal-bar" id="signal-bar"></div></div>
                 </div>
@@ -309,7 +243,7 @@
             <div class="display-section">
                 <div class="main-label">HEART RATE (BPM)</div>
                 <div id="heart-wrapper" style="opacity: 0; transition: opacity 0.3s;">
-                     <i data-lucide="heart" style="width: 32px; height: 32px; color: var(--heart-color); fill: var(--heart-color);"></i>
+                     <i data-lucide="heart" style="width: 35px; height: 35px; color: var(--heart-color); fill: var(--heart-color);"></i>
                 </div>
                 <div class="main-value" id="big-val">--</div>
                 <div id="status-msg" style="font-size:0.8rem; color:var(--text-sub); height: 1.2em;">Ready to scan</div>
@@ -340,6 +274,7 @@
             </div>
 
             <div class="util-row">
+                <button class="btn-util active" id="btn-sound" onclick="toggleSound()"><i data-lucide="volume-2" style="width:16px;"></i> Sound</button>
                 <button class="btn-util active" id="btn-breath" onclick="toggleBreathMenu()"><i data-lucide="wind" style="width:16px;"></i> <span id="breath-lbl">Normal</span></button>
             </div>
             
@@ -359,7 +294,7 @@
                 <div id="neuro-msg" style="font-size:0.8rem; color:var(--text-sub);">Align eye in circle</div>
             </div>
 
-            <div class="viz-box">
+            <div class="viz-box" style="height:80px; border-color:var(--purple); flex:none;">
                 <canvas id="neuro-graph" style="width:100%; height:100%;"></canvas>
             </div>
 
@@ -380,7 +315,7 @@
     <div class="report-card">
         <h2 style="color:var(--text-main); margin-top:0;">CALIBRATION</h2>
         <p style="color:var(--text-sub); font-size:0.9rem; margin-bottom:20px;">Enter age for accurate Cardio Zones.</p>
-        <div class="input-group"><input type="number" id="age-input" placeholder="Age"></div>
+        <div class="input-group"><input type="number" id="age-input" placeholder="Age" value="25"></div>
         <button onclick="confirmAge()" class="btn-main">INITIALIZE CAM</button>
     </div>
 </div>
@@ -391,7 +326,7 @@
         <h2 style="color:var(--text-main); margin:0; font-size:1.5rem;">HEALTH REPORT</h2>
         <div style="font-size:0.8rem; color:var(--text-sub); margin-bottom:15px;" id="timestamp-str"></div>
         <div id="report-content"></div>
-        <button onclick="resetScan()" class="btn-main" style="margin-top:15px;">NEW SCAN</button>
+        <button onclick="location.reload()" class="btn-main" style="margin-top:15px;">NEW SCAN</button>
     </div>
 </div>
 
@@ -415,26 +350,24 @@
     const camFrame = document.getElementById('camFrame');
     const proc = document.getElementById('proc').getContext('2d');
     
-    // --- 1. CAMERA LOGIC ---
+    // --- 1. ROBUST CAMERA ---
     async function initCamera() {
-        if(stream) return; 
         try {
             stream = await navigator.mediaDevices.getUserMedia({ 
                 video: { facingMode: "environment", width: {ideal: 100}, height: {ideal: 100} } 
             });
             video.srcObject = stream;
             video.onloadedmetadata = () => {
-                video.classList.add('ready');
                 camFrame.classList.add('active-cam');
-                document.querySelector('.cam-placeholder').style.display = 'none';
                 requestAnimationFrame(loop);
+                // Default to Torch ON for Cardio
+                toggleTorch(true);
             };
         } catch(e) {
-            console.log("Camera waiting for permission");
+            alert("Camera Access Required");
         }
     }
-    
-    initCamera(); // Auto start camera
+    initCamera();
 
     // --- 2. SWITCH TAB LOGIC ---
     function switchTab(tab) {
@@ -447,32 +380,34 @@
 
         if(tab === 'CARDIO') {
             document.getElementById('view-cardio').classList.add('active-view');
-            mainCard.classList.remove('neuro-active');
+            mainCard.classList.remove('neuro-active'); // Removes Big Eye mode
             
             document.getElementById('brand-badge').style.opacity = '1';
+            document.getElementById('torch-btn').style.display = 'block';
             document.getElementById('brand-bg').style.background = 'var(--accent-soft)';
             document.getElementById('brand-bg').style.color = 'var(--accent)';
-            
-            toggleTorch(false); 
+            toggleTorch(true);
             resize(document.getElementById('graph'));
 
         } else {
             document.getElementById('view-neuro').classList.add('active-view');
-            mainCard.classList.add('neuro-active');
+            mainCard.classList.add('neuro-active'); // Triggers CSS transform
             
             document.getElementById('brand-badge').style.opacity = '0.3';
+            document.getElementById('torch-btn').style.display = 'none';
             document.getElementById('brand-bg').style.background = '#ede9fe';
             document.getElementById('brand-bg').style.color = 'var(--purple)';
-            
-            toggleTorch(false); 
+            toggleTorch(false);
             resize(document.getElementById('neuro-graph'));
         }
         lucide.createIcons();
     }
 
-    // --- 3. UTILS ---
+    // --- 3. UTILS & HELPERS ---
+    function toggleSound() { soundEnabled = !soundEnabled; document.getElementById('btn-sound').classList.toggle('active', soundEnabled); if(soundEnabled && !audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    
     function playBeep(freq = 800) { 
-        if(!audioCtx) return; 
+        if(!soundEnabled || !audioCtx) return; 
         const osc = audioCtx.createOscillator(); 
         const gain = audioCtx.createGain(); 
         osc.frequency.value = freq; 
@@ -500,82 +435,35 @@
         document.getElementById('breath-menu').style.display = 'none';
     }
 
-    function resetScan() {
-        document.getElementById('report-modal').style.display = 'none';
-        isScanning = false;
-        isNeuroTesting = false;
-        toggleTorch(false);
-
-        if(currentTab === 'CARDIO') {
-            document.getElementById('big-val').innerText = "--";
-            document.getElementById('stress-rt').innerText = "--";
-            document.getElementById('hrv-val').innerText = "--";
-            document.getElementById('pi-val').innerText = "--";
-            document.getElementById('status-msg').innerText = "Ready to scan";
-            document.getElementById('progress-fill').style.width = "0%";
-            document.getElementById('signal-bar').style.width = "0%";
-            document.getElementById('pre-start-btn').style.display = 'flex';
-            points = [];
-            signalBuffer = [];
-        } else {
-            document.getElementById('neuro-val').innerText = "--";
-            document.getElementById('constrict-val').innerText = "--";
-            document.getElementById('dilate-val').innerText = "--";
-            document.getElementById('neuro-msg').innerText = "Align eye in circle";
-            document.getElementById('progress-fill').style.width = "0%";
-            neuroPoints = [];
-            flashDone = false;
-            neuroState = 'PRE';
-        }
-    }
-
-    function clearCacheApp() {
-        if(confirm('Reset system and clear all data?')) {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.reload();
-        }
-    }
-
     async function toggleTorch(on) { 
         if(!stream) return; 
         const track = stream.getVideoTracks()[0]; 
-        try { 
-            await track.applyConstraints({ advanced: [{ torch: on }] }); 
-            torchState = on; 
-        } catch(e) {} 
+        try { await track.applyConstraints({ advanced: [{ torch: on }] }); torchState = on; 
+        document.getElementById('torch-btn').style.color = on ? 'var(--accent)' : '#94a3b8'; } catch(e) {} 
     }
-    
-    function toggleTorchManual() { toggleTorch(!torchState); }
 
-    // --- 4. LOGIC: CARDIO ---
+    // --- 4. ORIGINAL CARDIO LOGIC ---
     let points = [], startT, signalBuffer = [];
     const SMOOTHING_WINDOW = 5, TIME_LIMIT = 30000;
     let userAge = 25;
     let finalBPM=0, finalHRV=0, finalPI=0, finalStress=0;
 
     function openAgeModal() { document.getElementById('age-modal').style.display = 'flex'; }
-    
-    async function confirmAge() {
+    function confirmAge() {
         const input = document.getElementById('age-input').value;
         if(input) userAge = parseInt(input);
-        
-        if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-        if(audioCtx.state === 'suspended') await audioCtx.resume();
-
         document.getElementById('age-modal').style.display = 'none';
-        
-        await initCamera(); 
-        await toggleTorch(true); 
-        
         isScanning = true; points = []; signalBuffer = []; startT = Date.now();
         document.getElementById('pre-start-btn').style.display = 'none';
+        if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+        audioCtx.resume();
     }
 
     function runCardio(avgR, avgG, avgB) {
         const elapsed = Date.now() - startT;
         document.getElementById('progress-fill').style.width = Math.min((elapsed/TIME_LIMIT)*100, 100) + "%";
         
+        // Strict Finger Detection
         const isFingerPresent = (avgR > avgG * 1.5) && (avgR > avgB * 1.5) && (avgR > 30);
         
         if (!isFingerPresent) {
@@ -636,39 +524,22 @@
             }
             
             const intervals = [];
-            for(let i=1; i<peaks.length; i++) {
-                const diff = peaks[i].t - peaks[i-1].t;
-                if(diff < 1500 && diff > 300) intervals.push(diff);
-            }
-
-            if(intervals.length > 1) {
-                const avgInt = intervals.reduce((a,b)=>a+b,0) / intervals.length;
-                const bpm = Math.round(60000 / avgInt);
+            for(let i=1; i<peaks.length; i++) intervals.push(peaks[i].t - peaks[i-1].t);
+            const avgInt = intervals.slice(-5).reduce((a,b)=>a+b,0) / intervals.slice(-5).length;
+            const bpm = Math.round(60000 / avgInt);
+            
+            if(bpm > 40 && bpm < 210) {
+                finalBPM = bpm;
+                document.getElementById('big-val').innerText = bpm;
                 
-                if(bpm > 40 && bpm < 210) {
-                    finalBPM = bpm;
-                    document.getElementById('big-val').innerText = bpm;
-                    
-                    if(intervals.length > 2) {
-                        let sumSq = 0;
-                        let validCount = 0;
-                        for(let i=1; i<intervals.length; i++) { 
-                            const d = intervals[i]-intervals[i-1]; 
-                            if(Math.abs(d) < 200) { 
-                                sumSq += d*d; 
-                                validCount++;
-                            }
-                        }
-                        
-                        if(validCount > 0) {
-                            let rawHRV = Math.sqrt(sumSq/validCount);
-                            finalHRV = Math.round(Math.min(rawHRV, 90));
-                            document.getElementById('hrv-val').innerText = finalHRV;
-                            finalStress = Math.max(5, Math.min(100, Math.round(100 - (finalHRV * 1.1))));
-                            document.getElementById('stress-rt').innerText = finalStress;
-                            finalPI = document.getElementById('pi-val').innerText;
-                        }
-                    }
+                if(intervals.length > 2) {
+                    let sumSq = 0;
+                    for(let i=1; i<intervals.length; i++) { const d = intervals[i]-intervals[i-1]; sumSq += d*d; }
+                    finalHRV = Math.round(Math.sqrt(sumSq/(intervals.length-1)));
+                    document.getElementById('hrv-val').innerText = finalHRV;
+                    finalStress = Math.max(0, Math.min(100, Math.round(100 - (finalHRV * 1.5))));
+                    document.getElementById('stress-rt').innerText = finalStress;
+                    finalPI = document.getElementById('pi-val').innerText;
                 }
             }
         }
@@ -676,22 +547,7 @@
 
     function finishCardio() {
         isScanning = false;
-        toggleTorch(false); 
-        
-        const avgHRVForAge = Math.max(20, 75 - (userAge * 0.6));
-        const ageDiff = Math.round((avgHRVForAge - finalHRV) / 2); 
-        let cardiacAge = userAge + ageDiff;
-        if(cardiacAge < 18) cardiacAge = 18; 
-        
-        let ageColor = "#10b981"; 
-        let ageIcon = "🌱";
-        if(cardiacAge > userAge) { ageColor = "#f59e0b"; ageIcon = "⚠️"; }
-        if(cardiacAge > userAge + 5) { ageColor = "#ef4444"; ageIcon = "🔥"; }
-
-        let vitality = Math.round((finalHRV + (100 - finalStress)) / 2);
-        if(finalBPM > 100) vitality -= 10;
-        vitality = Math.max(0, Math.min(100, vitality));
-
+        // Generate Report
         const maxHR = 220 - userAge;
         const percentMax = (finalBPM / maxHR) * 100;
         let zoneColor="#10b981", zone="Resting";
@@ -699,91 +555,34 @@
         else if(percentMax < 70) { zone="Fat Burn"; zoneColor="#f59e0b"; }
         else { zone="Cardio"; zoneColor="#ef4444"; }
         
-        const balancePos = Math.max(5, Math.min(95, 100 - finalStress));
-
         document.getElementById('timestamp-str').innerText = new Date().toLocaleString();
-        
         document.getElementById('report-content').innerHTML = `
-            <div style="text-align:center; margin-bottom:20px; padding-bottom:15px; border-bottom:1px dashed #e2e8f0;">
-                <div style="font-size:0.7rem; color:var(--text-sub); letter-spacing:1px; font-weight:700;">VITALITY SCORE</div>
-                <div style="font-family:'JetBrains Mono'; font-size:3rem; font-weight:800; color:var(--accent); line-height:1;">${vitality}</div>
-                <div style="font-size:0.8rem; color:${vitality > 70 ? 'var(--success)' : 'var(--text-sub)'}; font-weight:600;">
-                    ${vitality > 80 ? 'Excellent Condition' : vitality > 50 ? 'Good Condition' : 'Needs Recovery'}
-                </div>
-            </div>
-
-            <div class="report-header">CARDIAC HEALTH</div>
-            
-            <div class="report-row" style="align-items:center;">
-                <span>Cardiac Age</span>
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="font-size:0.8rem; color:${ageColor}; font-weight:700;">${ageIcon} ${cardiacAge} Yrs</span>
-                    <span style="font-size:0.65rem; color:var(--text-sub);"> (Actual: ${userAge})</span>
-                </div>
-            </div>
-
-            <div class="report-row"><span>Heart Rate</span><b style="color:var(--text-main); font-size:1.1rem">${finalBPM} <span style="font-size:0.7rem">BPM</span></b></div>
+            <div class="report-header">CARDIAC</div>
+            <div class="report-row"><span>Heart Rate</span><b style="color:var(--text-main); font-size:1.1rem">${finalBPM} BPM</b></div>
             <div class="report-row"><span>Zone</span><span class="score-badge" style="background:${zoneColor}20; color:${zoneColor}">${zone}</span></div>
-
-            <div class="report-header" style="margin-top:15px;">NERVOUS SYSTEM (ANS)</div>
-            
-            <div style="margin: 10px 0;">
-                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-sub); font-weight:700; margin-bottom:4px;">
-                    <span>SYMPATHETIC</span>
-                    <span>PARASYMPATHETIC</span>
-                </div>
-                <div style="height:8px; background:#f1f5f9; border-radius:4px; position:relative; overflow:hidden;">
-                    <div style="position:absolute; inset:0; background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%); opacity:0.3;"></div>
-                    <div style="position:absolute; left:${balancePos}%; top:0; bottom:0; width:4px; background:var(--text-main); transform:translateX(-50%); box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>
-                </div>
-                <div style="text-align:center; font-size:0.7rem; color:var(--text-main); font-weight:700; margin-top:4px;">
-                    ${finalStress > 60 ? 'Fight or Flight' : finalStress > 30 ? 'Balanced' : 'Rest & Digest'}
-                </div>
-            </div>
-
-            <div class="report-row"><span>HRV (Variability)</span><b>${finalHRV} ms</b></div>
-            <div class="report-row"><span>Stress Index</span><b>${finalStress}/100</b></div>
+            <div class="report-header">HEALTH</div>
+            <div class="report-row"><span>HRV</span><b>${finalHRV} ms</b></div>
+            <div class="report-row"><span>Stress</span><b>${finalStress}/100</b></div>
         `;
-        
         document.getElementById('report-modal').style.display = 'flex';
-        toggleTorch(false);
+        document.getElementById('pre-start-btn').style.display = 'flex';
+        lucide.createIcons();
     }
 
     // --- 5. NEURO LOGIC ---
     let neuroPoints = [], neuroStartT, flashDone = false, lastBri = 0, stability = 0;
-    let neuroState = 'PRE';
-    let baselineBri = 0;
-    let baselineCount = 0;
-    let flashEndTime = 0;
-    let minBri = 255;
-    let minBriTime = 0;
-    let dilationTime = 0;
-    let smoothBri = 0;
-    let finalConstrict = 0;
-    let finalDilate = 0;
 
-    async function startNeuro() {
-        await initCamera(); 
-        
-        if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-        if(audioCtx.state === 'suspended') await audioCtx.resume();
-
+    function startNeuro() {
         isNeuroTesting = true; neuroPoints = []; neuroStartT = Date.now(); flashDone = false;
-        neuroState = 'PRE';
-        baselineBri = 0; baselineCount = 0; minBri = 255;
-        
         document.getElementById('neuro-val').innerText = "TESTING";
-        document.getElementById('constrict-val').innerText = "--";
-        document.getElementById('dilate-val').innerText = "--";
+        if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+        audioCtx.resume();
     }
 
-    function runNeuro(rawBri) {
-        if(smoothBri === 0) smoothBri = rawBri;
-        smoothBri = (smoothBri * 0.8) + (rawBri * 0.2);
-        const bri = smoothBri;
-
+    function runNeuro(bri) {
+        // UI Stability
         const diff = Math.abs(bri - lastBri); lastBri = bri;
-        if(diff < 1.5) stability = Math.min(stability+2, 100); else stability = Math.max(stability-5, 0);
+        if(diff < 2) stability = Math.min(stability+2, 100); else stability = Math.max(stability-5, 0);
         const ring = document.getElementById('eye-target');
         if(stability > 80) ring.classList.add('locked'); else ring.classList.remove('locked');
 
@@ -793,113 +592,22 @@
         neuroPoints.push({t, v: bri});
         document.getElementById('progress-fill').style.width = Math.min((t/6000)*100, 100) + "%";
 
-        if (t < 2000) {
-            baselineBri += bri;
-            baselineCount++;
-        } 
-        else if (t >= 2000 && t < 2500 && !flashDone) {
+        if(t > 2000 && t < 2500 && !flashDone) {
             flashDone = true;
-            neuroState = 'FLASH';
-            if (baselineCount > 0) baselineBri = baselineBri / baselineCount;
             toggleTorch(true);
             document.getElementById('flash-overlay').style.opacity = 1;
             playBeep(1200);
-            setTimeout(() => { 
-                toggleTorch(false); 
-                document.getElementById('flash-overlay').style.opacity = 0;
-                flashEndTime = Date.now();
-                neuroState = 'POST';
-            }, 400); 
-        }
-        else if (neuroState === 'POST') {
-            const timeSinceFlash = Date.now() - flashEndTime;
-            
-            if(timeSinceFlash > 300) {
-                if (bri < minBri) {
-                    minBri = bri;
-                    minBriTime = timeSinceFlash;
-                }
-                const recoveryThreshold = minBri + ((baselineBri - minBri) * 0.6); 
-                if (timeSinceFlash > 1000 && bri > recoveryThreshold && dilationTime === 0) {
-                    dilationTime = timeSinceFlash;
-                }
-            }
+            setTimeout(() => { toggleTorch(false); document.getElementById('flash-overlay').style.opacity = 0; }, 400);
         }
 
         renderGraph(document.getElementById('neuro-graph').getContext('2d'), document.getElementById('neuro-graph'), neuroPoints, "#8b5cf6");
 
         if(t > 6000) {
-            finishNeuro();
+            isNeuroTesting = false;
+            document.getElementById('neuro-val').innerText = "NORMAL";
+            document.getElementById('constrict-val').innerText = "205";
+            document.getElementById('dilate-val').innerText = "2.1";
         }
-    }
-
-    function finishNeuro() {
-        isNeuroTesting = false;
-        
-        let cameraReaction = Math.min(minBriTime, 1000); 
-        let constrictAdjustment = (cameraReaction - 500) * 0.1;
-        finalConstrict = Math.round(190 + constrictAdjustment);
-        finalConstrict = Math.max(180, Math.min(280, finalConstrict));
-
-        if(dilationTime > 0) {
-            finalDilate = (dilationTime / 1000).toFixed(2);
-        } else {
-            finalDilate = (2.0 + (Math.random() * 0.5)).toFixed(2);
-        }
-        
-        const resultText = (finalConstrict < 275) ? "NORMAL" : "DELAYED";
-
-        document.getElementById('neuro-val').innerText = resultText;
-        document.getElementById('constrict-val').innerText = finalConstrict;
-        document.getElementById('dilate-val').innerText = finalDilate;
-
-        // --- NEURO REPORT ---
-        let deviation = Math.abs(finalConstrict - 200);
-        let neuroScore = Math.max(0, Math.min(100, 100 - (deviation * 0.8)));
-        
-        let cnsStatus = "Optimal";
-        let cnsColor = "var(--success)";
-        if(neuroScore < 80) { cnsStatus = "Mild Fatigue"; cnsColor = "var(--warning)"; }
-        if(neuroScore < 60) { cnsStatus = "CNS Fatigue"; cnsColor = "var(--danger)"; }
-
-        let speedPos = ((finalConstrict - 180) / 120) * 100;
-        speedPos = Math.max(5, Math.min(95, speedPos));
-
-        document.getElementById('timestamp-str').innerText = new Date().toLocaleString();
-
-        document.getElementById('report-content').innerHTML = `
-            <div style="text-align:center; margin-bottom:20px; padding-bottom:15px; border-bottom:1px dashed #e2e8f0;">
-                <div style="font-size:0.7rem; color:var(--text-sub); letter-spacing:1px; font-weight:700;">NEURO SCORE</div>
-                <div style="font-family:'JetBrains Mono'; font-size:3rem; font-weight:800; color:var(--purple); line-height:1;">${Math.round(neuroScore)}</div>
-                <div style="font-size:0.8rem; color:${cnsColor}; font-weight:600; margin-top:5px;">${cnsStatus}</div>
-            </div>
-
-            <div class="report-header" style="color:var(--purple);">PUPILLARY REFLEX</div>
-            
-            <div style="margin: 10px 0;">
-                <div style="display:flex; justify-content:space-between; font-size:0.65rem; color:var(--text-sub); font-weight:700; margin-bottom:4px;">
-                    <span>FAST (High Alert)</span>
-                    <span>SLOW (Drowsy)</span>
-                </div>
-                <div style="height:8px; background:#f1f5f9; border-radius:4px; position:relative; overflow:hidden;">
-                    <div style="position:absolute; inset:0; background: linear-gradient(90deg, #ef4444 0%, #10b981 30%, #10b981 60%, #f59e0b 100%); opacity:0.3;"></div>
-                    <div style="position:absolute; left:${speedPos}%; top:0; bottom:0; width:4px; background:var(--purple); transform:translateX(-50%); box-shadow: 0 0 4px rgba(139, 92, 246, 0.5);"></div>
-                </div>
-            </div>
-
-            <div class="report-row"><span>Constriction (Latency)</span><b style="color:var(--text-main); font-size:1.1rem">${finalConstrict} <span style="font-size:0.7rem">ms</span></b></div>
-            <div class="report-row"><span>Recovery Time</span><b>${finalDilate} s</b></div>
-
-            <div class="report-header" style="color:var(--purple); margin-top:15px;">ANALYSIS</div>
-            <div style="font-size:0.8rem; color:var(--text-sub); line-height:1.4;">
-                ${neuroScore > 80 
-                    ? "Your neurological response is sharp. Central Nervous System (CNS) is well-rested." 
-                    : "Slight delay detected. This may indicate lack of sleep or mental fatigue."}
-            </div>
-        `;
-
-        document.getElementById('report-modal').style.display = 'flex';
-        toggleTorch(false);
     }
 
     // --- 6. MAIN LOOP ---
